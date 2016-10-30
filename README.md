@@ -2,6 +2,12 @@
 
 Create a second custom RSS feed
 
+Features :
+---
+
+* Configure the number of posts.
+* Load future posts (and limit by hours)
+
 How to install :
 ---
 
@@ -13,3 +19,8 @@ How to configure :
 
 * Fill the settings in Tools / Custom RSS.
 * Your feed is now available at the address : yoursite.com/wpucustomrss/
+
+License :
+---
+
+MIT : https://tldrlegal.com/license/mit-license
