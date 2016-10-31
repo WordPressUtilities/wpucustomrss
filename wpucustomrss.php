@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.1
+Version: 0.2
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -16,8 +16,11 @@ class WPUCustomRSS {
     public $route = 'wpucustomrss';
     private $option_id = 'wpucustomrss_options';
     private $messages = array();
+    public $values;
 
     public function __construct() {
+
+        $this->values = get_option($this->option_id);
 
         $this->options = array(
             'plugin_publicname' => 'WPU Custom RSS',
@@ -39,7 +42,7 @@ class WPUCustomRSS {
         ));
 
         // Init RSS
-        add_action('wp', array(&$this, 'do_rss'));
+        add_action('wp', array(&$this, 'launch_rss'));
 
         // Add new route
         add_action('init', array(&$this, 'add_custom_rules'));
@@ -84,6 +87,16 @@ class WPUCustomRSS {
                 'section' => 'main',
                 'type' => 'number',
                 'label' => __('Number of posts', 'wpucustomrss')
+            ),
+            'content_after_feed' => array(
+                'section' => 'main',
+                'type' => 'editor',
+                'label' => __('Additional item content - after', 'wpucustomrss')
+            ),
+            'content_before_feed' => array(
+                'section' => 'main',
+                'type' => 'editor',
+                'label' => __('Additional item content - before', 'wpucustomrss')
             ),
             'load_future_posts' => array(
                 'section' => 'future',
@@ -140,34 +153,52 @@ class WPUCustomRSS {
       RSS Feed
     ---------------------------------------------------------- */
 
-    public function do_rss() {
-        $feed = 'rss2';
+    public function launch_rss() {
         if (is_admin() || !get_query_var('wpucustomrss')) {
             return;
         }
+        add_filter('the_content_feed', array(&$this, 'content_before_feed'));
+        add_filter('the_content_feed', array(&$this, 'content_after_feed'));
+        $this->do_rss();
+    }
 
-        $settings = get_option($this->option_id);
+    public function content_before_feed($content) {
+        if (isset($this->values['content_before_feed']) && !empty($this->values['content_before_feed'])) {
+            $content = wpautop($this->values['content_before_feed']) . $content;
+        }
+        return $content;
+    }
+
+    public function content_after_feed($content) {
+        if (isset($this->values['content_after_feed']) && !empty($this->values['content_after_feed'])) {
+            $content .= wpautop($this->values['content_after_feed']);
+        }
+        return $content;
+    }
+
+    public function do_rss() {
+        $feed = 'rss2';
 
         $_query = array();
 
         // Number of posts
         $_query['posts_per_page'] = 10;
-        if (isset($settings['posts_per_page']) && is_numeric($settings['posts_per_page'])) {
-            $_query['posts_per_page'] = $settings['posts_per_page'];
+        if (isset($this->values['posts_per_page']) && is_numeric($this->values['posts_per_page'])) {
+            $_query['posts_per_page'] = $this->values['posts_per_page'];
         }
 
         // Post status
         $_query['post_status'] = array('publish');
 
         // Load future posts
-        if (isset($settings['load_future_posts']) && $settings['load_future_posts'] == '1') {
+        if (isset($this->values['load_future_posts']) && $this->values['load_future_posts'] == '1') {
             $_query['post_status'][] = 'future';
         }
 
         // Limit future posts
         $time_limite_before = 0;
-        if (isset($settings['future_posts_hours_limit']) && is_numeric($settings['future_posts_hours_limit'])) {
-            $time_limite_before = intval($settings['future_posts_hours_limit'], 10);
+        if (isset($this->values['future_posts_hours_limit']) && is_numeric($this->values['future_posts_hours_limit'])) {
+            $time_limite_before = intval($this->values['future_posts_hours_limit'], 10);
         }
         if ($time_limite_before > 0) {
             $before = current_time('timestamp') + 3600 * $time_limite_before;
