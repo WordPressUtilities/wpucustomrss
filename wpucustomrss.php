@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.2
+Version: 0.3
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -51,6 +51,8 @@ class WPUCustomRSS {
     }
 
     public function plugins_loaded() {
+        load_plugin_textdomain('wpucustomrss', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+
         // Admin page
         add_action('admin_menu', array(&$this,
             'admin_menu'
@@ -88,6 +90,12 @@ class WPUCustomRSS {
                 'type' => 'number',
                 'label' => __('Number of posts', 'wpucustomrss')
             ),
+            'load_post_format' => array(
+                'section' => 'main',
+                'type' => 'checkbox',
+                'label' => __('Display post format', 'wpucustomrss'),
+                'label_check' => __('Post format is visible in the RSS feed', 'wpucustomrss')
+            ),
             'content_after_feed' => array(
                 'section' => 'main',
                 'type' => 'editor',
@@ -108,7 +116,7 @@ class WPUCustomRSS {
                 'section' => 'future',
                 'type' => 'number',
                 'label' => __('Limit of hours', 'wpucustomrss'),
-                'help' => 'Load future posts for the next # hours. 0 load every post.'
+                'help' => __('Load future posts for the next # hours. 0 load every post.', 'wpucustomrss')
             )
         );
 
@@ -157,9 +165,21 @@ class WPUCustomRSS {
         if (is_admin() || !get_query_var('wpucustomrss')) {
             return;
         }
+        /* After item */
+        add_action('rss_item', array(&$this, 'after_item'));
+        add_action('atom_entry', array(&$this, 'after_item'));
+        add_action('rss_item', array(&$this, 'after_item'));
+        add_action('rss2_item', array(&$this, 'after_item'));
+        /* Before / After content */
         add_filter('the_content_feed', array(&$this, 'content_before_feed'));
         add_filter('the_content_feed', array(&$this, 'content_after_feed'));
         $this->do_rss();
+    }
+
+    public function after_item() {
+        if (isset($this->values['load_future_posts']) && $this->values['load_future_posts'] == '1') {
+            echo '<postFormat>' . ( get_post_format($post->ID) ? : 'standard') . '</postFormat>';
+        }
     }
 
     public function content_before_feed($content) {
