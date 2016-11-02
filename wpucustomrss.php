@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.3
+Version: 0.4
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -78,6 +78,9 @@ class WPUCustomRSS {
                 'main' => array(
                     'name' => __('Feed Settings', 'wpucustomrss')
                 ),
+                'content' => array(
+                    'name' => __('Content Settings', 'wpucustomrss')
+                ),
                 'future' => array(
                     'name' => __('Future Posts', 'wpucustomrss')
                 )
@@ -90,19 +93,30 @@ class WPUCustomRSS {
                 'type' => 'number',
                 'label' => __('Number of posts', 'wpucustomrss')
             ),
-            'load_post_format' => array(
+            'feed_format' => array(
                 'section' => 'main',
+                'type' => 'select',
+                'label' => __('Feed format', 'wpucustomrss'),
+                'datas' => array(
+                    'rss2' => 'RSS2',
+                    'rss' => 'RSS',
+                    'atom' => 'Atom',
+                    'rdf' => 'RDF'
+                )
+            ),
+            'load_post_format' => array(
+                'section' => 'content',
                 'type' => 'checkbox',
                 'label' => __('Display post format', 'wpucustomrss'),
                 'label_check' => __('Post format is visible in the RSS feed', 'wpucustomrss')
             ),
             'content_after_feed' => array(
-                'section' => 'main',
+                'section' => 'content',
                 'type' => 'editor',
                 'label' => __('Additional item content - after', 'wpucustomrss')
             ),
             'content_before_feed' => array(
-                'section' => 'main',
+                'section' => 'content',
                 'type' => 'editor',
                 'label' => __('Additional item content - before', 'wpucustomrss')
             ),
@@ -146,6 +160,10 @@ class WPUCustomRSS {
     public function admin_settings() {
 
         echo '<div class="wrap"><h1>' . get_admin_page_title() . '</h1>';
+
+        echo '<p><a target="_blank" href="' . get_site_url(null, $this->route) . '"><span style="text-decoration:none;padding-right:0.2em" class="dashicons dashicons-rss"></span>' . __('Preview RSS Feed', 'wpucustomrss') . '</a></p>';
+
+        echo '<hr />';
         settings_errors($this->settings_details['option_id']);
 
         echo '<form action="' . admin_url('options.php') . '" method="post">';
@@ -178,7 +196,7 @@ class WPUCustomRSS {
 
     public function after_item() {
         if (isset($this->values['load_future_posts']) && $this->values['load_future_posts'] == '1') {
-            echo '<postFormat>' . ( get_post_format($post->ID) ? : 'standard') . '</postFormat>';
+            echo '<postFormat>' . (get_post_format($post->ID) ?: 'standard') . '</postFormat>';
         }
     }
 
@@ -197,8 +215,10 @@ class WPUCustomRSS {
     }
 
     public function do_rss() {
-        $feed = 'rss2';
-
+        $feed_format = 'rss2';
+        if (isset($this->values['feed_format']) && array_key_exists($this->values['feed_format'], $this->settings['feed_format']['datas'])) {
+            $feed_format = $this->values['feed_format'];
+        }
         $_query = array();
 
         // Number of posts
@@ -237,7 +257,7 @@ class WPUCustomRSS {
         // Trigger custom query
         query_posts($_query);
 
-        do_action("do_feed_{$feed}", false, $feed);
+        do_action("do_feed_{$feed_format}", false, $feed);
         die;
     }
 

@@ -6,6 +6,7 @@ Features :
 ---
 
 * Configure the number of posts.
+* Configure the feed format.
 * Load future posts (and limit by hours)
 * Load additional content before or after feed content.
 

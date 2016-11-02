@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Custom RSS\n"
-"POT-Creation-Date: 2016-11-01 23:48+0100\n"
+"POT-Creation-Date: 2016-11-02 16:49+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -19,7 +19,15 @@ msgstr ""
 msgid "Import Settings"
 msgstr "Réglages d'import"
 
-#: .././inc/WPUBaseSettings.php:176
+#: .././inc/WPUBaseSettings.php:92
+msgid "No"
+msgstr "Non"
+
+#: .././inc/WPUBaseSettings.php:92
+msgid "Yes"
+msgstr "Oui"
+
+#: .././inc/WPUBaseSettings.php:178
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
 
@@ -28,49 +36,63 @@ msgid "Feed Settings"
 msgstr "Paramètres du flux"
 
 #: .././wpucustomrss.php:82
+msgid "Content Settings"
+msgstr "Réglages du contenu"
+
+#: .././wpucustomrss.php:85
 msgid "Future Posts"
 msgstr "Articles futurs"
 
-#: .././wpucustomrss.php:91
+#: .././wpucustomrss.php:94
 msgid "Number of posts"
 msgstr "Nombre d'articles"
 
-#: .././wpucustomrss.php:96
+#: .././wpucustomrss.php:99
+msgid "Feed format"
+msgstr "Format du flux :"
+
+#: .././wpucustomrss.php:110
 msgid "Display post format"
 msgstr "Afficher le format d'article"
 
-#: .././wpucustomrss.php:97
+#: .././wpucustomrss.php:111
 msgid "Post format is visible in the RSS feed"
 msgstr "Le format d'article est visible dans le flux RSS"
 
-#: .././wpucustomrss.php:102
+#: .././wpucustomrss.php:116
 msgid "Additional item content - after"
 msgstr "Contenu additionnel - après contenu"
 
-#: .././wpucustomrss.php:107
+#: .././wpucustomrss.php:121
 msgid "Additional item content - before"
 msgstr "Contenu additionnel - avant contenu"
 
-#: .././wpucustomrss.php:112
+#: .././wpucustomrss.php:126
 msgid "Load future posts into the RSS Feed"
 msgstr "Charger les articles futurs dans le flux RSS"
 
-#: .././wpucustomrss.php:113
+#: .././wpucustomrss.php:127
 msgid "Load future posts"
 msgstr "Charger les articles futurs"
 
-#: .././wpucustomrss.php:118
+#: .././wpucustomrss.php:132
 msgid "Limit of hours"
 msgstr "Limite d’heures"
 
-#: .././wpucustomrss.php:119
+#: .././wpucustomrss.php:133
 msgid "Load future posts for the next # hours. 0 load every post."
-msgstr "Charger les articles à venir pour les # prochaines heures. 0 charge tous les postes."
+msgstr ""
+"Charger les articles à venir pour les # prochaines heures. 0 charge tous les "
+"postes."
 
-#: .././wpucustomrss.php:135 .././wpucustomrss.php:141
+#: .././wpucustomrss.php:149 .././wpucustomrss.php:155
 msgid "Settings"
 msgstr "Réglages"
 
-#: .././wpucustomrss.php:154
+#: .././wpucustomrss.php:164
+msgid "Preview RSS Feed"
+msgstr "Aperçu du Flux RSS"
+
+#: .././wpucustomrss.php:172
 msgid "Save Changes"
 msgstr "Sauvegarder"
