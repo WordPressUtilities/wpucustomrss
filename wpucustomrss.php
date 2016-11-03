@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.4
+Version: 0.5
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -19,8 +19,7 @@ class WPUCustomRSS {
     public $values;
 
     public function __construct() {
-
-        $this->values = get_option($this->option_id);
+        $this->update_values();
 
         $this->options = array(
             'plugin_publicname' => 'WPU Custom RSS',
@@ -40,6 +39,9 @@ class WPUCustomRSS {
         add_action('init', array(&$this,
             'init'
         ));
+        add_action('updated_option', array(&$this,
+            'after_option_update'
+        ));
 
         // Init RSS
         add_action('wp', array(&$this, 'launch_rss'));
@@ -48,6 +50,13 @@ class WPUCustomRSS {
         add_action('init', array(&$this, 'add_custom_rules'));
         add_filter('query_vars', array(&$this, 'add_query_vars'));
 
+    }
+
+    public function update_values() {
+        $this->values = get_option($this->option_id);
+        if (isset($this->values['feed_route']) && !empty($this->values['feed_route'])) {
+            $this->route = $this->values['feed_route'];
+        }
     }
 
     public function plugins_loaded() {
@@ -103,6 +112,14 @@ class WPUCustomRSS {
                     'atom' => 'Atom',
                     'rdf' => 'RDF'
                 )
+            ),
+            'feed_route' => array(
+                'section' => 'main',
+                'type' => 'text',
+                'default' => 'wpucustomrss',
+                'regex' => '/^([a-z0-9]+){6,18}/',
+                'label' => __('Custom URL', 'wpucustomrss'),
+                'help' => __('Public URL for this feed. Default is wpucustomrss. 6 to 18 alphanumeric chars only.', 'wpucustomrss')
             ),
             'load_post_format' => array(
                 'section' => 'content',
@@ -184,7 +201,7 @@ class WPUCustomRSS {
             return;
         }
         /* After item */
-        add_action('rss_item', array(&$this, 'after_item'));
+        add_action('rdf_item', array(&$this, 'after_item'));
         add_action('atom_entry', array(&$this, 'after_item'));
         add_action('rss_item', array(&$this, 'after_item'));
         add_action('rss2_item', array(&$this, 'after_item'));
@@ -196,7 +213,7 @@ class WPUCustomRSS {
 
     public function after_item() {
         if (isset($this->values['load_future_posts']) && $this->values['load_future_posts'] == '1') {
-            echo '<postFormat>' . (get_post_format($post->ID) ?: 'standard') . '</postFormat>';
+            echo '<postFormat>' . (get_post_format(get_the_ID()) ?: 'standard') . '</postFormat>';
         }
     }
 
@@ -257,7 +274,7 @@ class WPUCustomRSS {
         // Trigger custom query
         query_posts($_query);
 
-        do_action("do_feed_{$feed_format}", false, $feed);
+        do_action("do_feed_{$feed_format}", false, '');
         die;
     }
 
@@ -277,13 +294,29 @@ class WPUCustomRSS {
             'top');
     }
 
+    public function set_rules() {
+        global $wp_rewrite;
+        /* Load new route */
+        $this->add_custom_rules();
+        /* Update rules */
+        flush_rewrite_rules(true);
+        $wp_rewrite->flush_rules(true);
+    }
+
     /* ----------------------------------------------------------
       Activation
     ---------------------------------------------------------- */
 
+    public function after_option_update($option_name) {
+        if ($option_name == $this->option_id) {
+            $this->update_values();
+            $this->set_rules();
+        }
+    }
+
     public function activation() {
-        $this->add_custom_rules();
-        flush_rewrite_rules(true);
+        $this->update_values();
+        $this->set_rules();
     }
 
 }

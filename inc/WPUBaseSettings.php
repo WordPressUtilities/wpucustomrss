@@ -134,6 +134,11 @@ class WPUBaseSettings {
                 if (isset($input[$id]) && preg_match($setting['regex'], $input[$id])) {
                     $options[$id] = $input[$id];
                 }
+                else {
+                    if(isset($setting['default'])){
+                        $options[$id] = $setting['default'];
+                    }
+                }
                 continue;
             }
 
