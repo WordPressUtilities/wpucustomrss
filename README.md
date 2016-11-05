@@ -10,6 +10,7 @@ Features :
 * Set a custom URL.
 * Load future posts (and limit by hours).
 * Load additional content before or after feed content.
+* Load featured image as an enclosure.
 
 How to install :
 ---
