@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Custom RSS\n"
-"POT-Creation-Date: 2016-11-03 17:05+0100\n"
+"POT-Creation-Date: 2016-11-05 18:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -27,7 +27,7 @@ msgstr "Non"
 msgid "Yes"
 msgstr "Oui"
 
-#: .././inc/WPUBaseSettings.php:183
+#: .././inc/WPUBaseSettings.php:186
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
 
@@ -72,40 +72,48 @@ msgid "Post format is visible in the RSS feed"
 msgstr "Le format d'article est visible dans le flux RSS"
 
 #: .././wpucustomrss.php:133
-msgid "Additional item content - after"
-msgstr "Contenu additionnel - après contenu"
+msgid "Load featured image"
+msgstr "Charger l'image à la une"
 
-#: .././wpucustomrss.php:138
+#: .././wpucustomrss.php:134
+msgid "The featured image is loaded as an enclosure"
+msgstr "L'image à la une est chargée en enclosure"
+
+#: .././wpucustomrss.php:139
 msgid "Additional item content - before"
 msgstr "Contenu additionnel - avant contenu"
 
-#: .././wpucustomrss.php:143
+#: .././wpucustomrss.php:144
+msgid "Additional item content - after"
+msgstr "Contenu additionnel - après contenu"
+
+#: .././wpucustomrss.php:149
 msgid "Load future posts into the RSS Feed"
 msgstr "Charger les articles futurs dans le flux RSS"
 
-#: .././wpucustomrss.php:144
+#: .././wpucustomrss.php:150
 msgid "Load future posts"
 msgstr "Charger les articles futurs"
 
-#: .././wpucustomrss.php:149
+#: .././wpucustomrss.php:155
 msgid "Limit of hours"
 msgstr "Limite d’heures"
 
-#: .././wpucustomrss.php:150
+#: .././wpucustomrss.php:156
 msgid "Load future posts for the next # hours. 0 load every post."
 msgstr ""
 "Charger les articles à venir pour les # prochaines heures. 0 charge tous les "
 "postes."
 
-#: .././wpucustomrss.php:166 .././wpucustomrss.php:172
+#: .././wpucustomrss.php:172 .././wpucustomrss.php:178
 msgid "Settings"
 msgstr "Réglages"
 
-#: .././wpucustomrss.php:181
+#: .././wpucustomrss.php:187
 msgid "Preview RSS Feed"
 msgstr "Aperçu du Flux RSS"
 
-#: .././wpucustomrss.php:189
+#: .././wpucustomrss.php:195
 msgid "Save Changes"
 msgstr "Sauvegarder"
 

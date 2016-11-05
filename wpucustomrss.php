@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.5
+Version: 0.6
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -127,15 +127,21 @@ class WPUCustomRSS {
                 'label' => __('Display post format', 'wpucustomrss'),
                 'label_check' => __('Post format is visible in the RSS feed', 'wpucustomrss')
             ),
-            'content_after_feed' => array(
+            'load_featured_image' => array(
                 'section' => 'content',
-                'type' => 'editor',
-                'label' => __('Additional item content - after', 'wpucustomrss')
+                'type' => 'checkbox',
+                'label' => __('Load featured image', 'wpucustomrss'),
+                'label_check' => __('The featured image is loaded as an enclosure', 'wpucustomrss')
             ),
             'content_before_feed' => array(
                 'section' => 'content',
                 'type' => 'editor',
                 'label' => __('Additional item content - before', 'wpucustomrss')
+            ),
+            'content_after_feed' => array(
+                'section' => 'content',
+                'type' => 'editor',
+                'label' => __('Additional item content - after', 'wpucustomrss')
             ),
             'load_future_posts' => array(
                 'section' => 'future',
@@ -212,9 +218,32 @@ class WPUCustomRSS {
     }
 
     public function after_item() {
-        if (isset($this->values['load_future_posts']) && $this->values['load_future_posts'] == '1') {
-            echo '<postFormat>' . (get_post_format(get_the_ID()) ?: 'standard') . '</postFormat>';
+        echo $this->load_post_format();
+        echo $this->load_featured_image();
+    }
+
+    public function load_post_format() {
+        if (isset($this->values['load_post_format']) && $this->values['load_post_format'] == '1') {
+            return '<postFormat>' . (get_post_format(get_the_ID()) ?: 'standard') . '</postFormat>';
         }
+        return '';
+    }
+
+    public function load_featured_image() {
+        if (!isset($this->values['load_featured_image']) || $this->values['load_featured_image'] != '1' || !has_post_thumbnail()) {
+            return '';
+        }
+        $_thumb = get_post_thumbnail_id($post->ID);
+        if (!is_numeric($_thumb)) {
+            return '';
+        }
+        $_attachment = wp_get_attachment_image_src($_thumb, 'large', false, '');
+        $_length = filesize(get_attached_file($_thumb));
+        $_type = get_post_mime_type($_thumb);
+        if (!is_array($_attachment) || !isset($_attachment[0])) {
+            return '';
+        }
+        return '<enclosure url="' . esc_attr($_attachment[0]) . '" length="' . $_length . '" type="' . $_type . '" />';
     }
 
     public function content_before_feed($content) {
