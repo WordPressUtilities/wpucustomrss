@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.6
+Version: 0.6.1
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/

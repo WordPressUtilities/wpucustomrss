@@ -4,7 +4,7 @@ namespace wpucustomrss;
 /*
 Class Name: WPU Base Settings
 Description: A class to handle native settings in WordPress admin
-Version: 0.7.1
+Version: 0.7.2
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -172,6 +172,9 @@ class WPUBaseSettings {
                 if (!is_numeric($input[$id])) {
                     $option_id = 0;
                 }
+                break;
+            case 'editor':
+                $option_id = trim($input[$id]);
                 break;
             default:
                 $option_id = esc_html(trim($input[$id]));
