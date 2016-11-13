@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.6.1
+Version: 0.7
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -69,6 +69,15 @@ class WPUCustomRSS {
         add_filter("plugin_action_links_" . plugin_basename(__FILE__), array(&$this,
             'add_settings_link'
         ));
+
+        // Feed visibility
+        if (isset($this->values['declare_feed']) && ($this->values['declare_feed'] == '1')) {
+            add_action('wp_head', array(&$this, 'declare_feed'));
+        }
+        if (isset($this->values['hide_native_feed']) && ($this->values['hide_native_feed'] == '1')) {
+            remove_action('wp_head', 'feed_links', 2);
+        }
+
     }
 
     public function init() {
@@ -120,6 +129,18 @@ class WPUCustomRSS {
                 'regex' => '/^([a-z0-9]+){6,18}/',
                 'label' => __('Custom URL', 'wpucustomrss'),
                 'help' => __('Public URL for this feed. Default is wpucustomrss. 6 to 18 alphanumeric chars only.', 'wpucustomrss')
+            ),
+            'declare_feed' => array(
+                'section' => 'main',
+                'type' => 'checkbox',
+                'label' => __('Declare feed', 'wpucustomrss'),
+                'label_check' => __('Declare feed link in site source', 'wpucustomrss')
+            ),
+            'hide_native_feed' => array(
+                'section' => 'main',
+                'type' => 'checkbox',
+                'label' => __('Hide native feed', 'wpucustomrss'),
+                'label_check' => __('Hide native feed link in site source', 'wpucustomrss')
             ),
             'load_post_format' => array(
                 'section' => 'content',
@@ -230,7 +251,8 @@ class WPUCustomRSS {
     }
 
     public function load_featured_image() {
-        if (!isset($this->values['load_featured_image']) || $this->values['load_featured_image'] != '1' || !has_post_thumbnail()) {
+        global $post;
+        if (!isset($this->values['load_featured_image']) || $this->values['load_featured_image'] != '1' || !is_object($post) || !has_post_thumbnail()) {
             return '';
         }
         $_thumb = get_post_thumbnail_id($post->ID);
@@ -305,6 +327,14 @@ class WPUCustomRSS {
 
         do_action("do_feed_{$feed_format}", false, '');
         die;
+    }
+
+    /* ----------------------------------------------------------
+      Declare link
+    ---------------------------------------------------------- */
+
+    public function declare_feed() {
+        echo '<link rel="alternate" type="application/rss+xml" href="' . get_site_url(null, $this->route) . '" />';
     }
 
     /* ----------------------------------------------------------

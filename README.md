@@ -11,6 +11,7 @@ Features :
 * Load future posts (and limit by hours).
 * Load additional content before or after feed content.
 * Load featured image as an enclosure.
+* Replace native feed in site source.
 
 How to install :
 ---

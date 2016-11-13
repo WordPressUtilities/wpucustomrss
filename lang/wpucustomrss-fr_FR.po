@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Custom RSS\n"
-"POT-Creation-Date: 2016-11-05 18:01+0100\n"
+"POT-Creation-Date: 2016-11-13 23:53+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -27,35 +27,35 @@ msgstr "Non"
 msgid "Yes"
 msgstr "Oui"
 
-#: .././inc/WPUBaseSettings.php:186
+#: .././inc/WPUBaseSettings.php:189
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
 
-#: .././wpucustomrss.php:88
+#: .././wpucustomrss.php:97
 msgid "Feed Settings"
 msgstr "Paramètres du flux"
 
-#: .././wpucustomrss.php:91
+#: .././wpucustomrss.php:100
 msgid "Content Settings"
 msgstr "Réglages du contenu"
 
-#: .././wpucustomrss.php:94
+#: .././wpucustomrss.php:103
 msgid "Future Posts"
 msgstr "Articles futurs"
 
-#: .././wpucustomrss.php:103
+#: .././wpucustomrss.php:112
 msgid "Number of posts"
 msgstr "Nombre d'articles"
 
-#: .././wpucustomrss.php:108
+#: .././wpucustomrss.php:117
 msgid "Feed format"
 msgstr "Format du flux :"
 
-#: .././wpucustomrss.php:121
+#: .././wpucustomrss.php:130
 msgid "Custom URL"
 msgstr "URL personnalisée"
 
-#: .././wpucustomrss.php:122
+#: .././wpucustomrss.php:131
 msgid ""
 "Public URL for this feed. Default is wpucustomrss. 6 to 18 alphanumeric "
 "chars only."
@@ -63,57 +63,73 @@ msgstr ""
 "URL publique pour ce flux. Par défaut à wpucustomrss. 6 à 18 caractères "
 "alphanumériques seulement."
 
-#: .././wpucustomrss.php:127
+#: .././wpucustomrss.php:136
+msgid "Declare feed"
+msgstr "Déclarer le flux"
+
+#: .././wpucustomrss.php:137
+msgid "Declare feed link in site source"
+msgstr "Déclarer le flux RSS dans la source du site"
+
+#: .././wpucustomrss.php:142
+msgid "Hide native feed"
+msgstr "Masquer le flux natif"
+
+#: .././wpucustomrss.php:143
+msgid "Hide native feed link in site source"
+msgstr "Masquer l'url du flux natif dans la source du site"
+
+#: .././wpucustomrss.php:148
 msgid "Display post format"
 msgstr "Afficher le format d'article"
 
-#: .././wpucustomrss.php:128
+#: .././wpucustomrss.php:149
 msgid "Post format is visible in the RSS feed"
 msgstr "Le format d'article est visible dans le flux RSS"
 
-#: .././wpucustomrss.php:133
+#: .././wpucustomrss.php:154
 msgid "Load featured image"
 msgstr "Charger l'image à la une"
 
-#: .././wpucustomrss.php:134
+#: .././wpucustomrss.php:155
 msgid "The featured image is loaded as an enclosure"
 msgstr "L'image à la une est chargée en enclosure"
 
-#: .././wpucustomrss.php:139
+#: .././wpucustomrss.php:160
 msgid "Additional item content - before"
 msgstr "Contenu additionnel - avant contenu"
 
-#: .././wpucustomrss.php:144
+#: .././wpucustomrss.php:165
 msgid "Additional item content - after"
 msgstr "Contenu additionnel - après contenu"
 
-#: .././wpucustomrss.php:149
+#: .././wpucustomrss.php:170
 msgid "Load future posts into the RSS Feed"
 msgstr "Charger les articles futurs dans le flux RSS"
 
-#: .././wpucustomrss.php:150
+#: .././wpucustomrss.php:171
 msgid "Load future posts"
 msgstr "Charger les articles futurs"
 
-#: .././wpucustomrss.php:155
+#: .././wpucustomrss.php:176
 msgid "Limit of hours"
 msgstr "Limite d’heures"
 
-#: .././wpucustomrss.php:156
+#: .././wpucustomrss.php:177
 msgid "Load future posts for the next # hours. 0 load every post."
 msgstr ""
 "Charger les articles à venir pour les # prochaines heures. 0 charge tous les "
 "postes."
 
-#: .././wpucustomrss.php:172 .././wpucustomrss.php:178
+#: .././wpucustomrss.php:193 .././wpucustomrss.php:199
 msgid "Settings"
 msgstr "Réglages"
 
-#: .././wpucustomrss.php:187
+#: .././wpucustomrss.php:208
 msgid "Preview RSS Feed"
 msgstr "Aperçu du Flux RSS"
 
-#: .././wpucustomrss.php:195
+#: .././wpucustomrss.php:216
 msgid "Save Changes"
 msgstr "Sauvegarder"
 
