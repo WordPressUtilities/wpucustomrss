@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Custom RSS\n"
-"POT-Creation-Date: 2016-11-13 23:53+0100\n"
+"POT-Creation-Date: 2019-03-01 19:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -9,27 +9,41 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-KeywordsList: __;_e,_n\n"
 "X-Poedit-SearchPath-0: ../.\n"
 
-#: .././inc/WPUBaseSettings.php:61
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:108
 msgid "Import Settings"
 msgstr "Réglages d'import"
 
-#: .././inc/WPUBaseSettings.php:92
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:128
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:444
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:451
+msgid "Settings"
+msgstr "Réglages"
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:155
 msgid "No"
 msgstr "Non"
 
-#: .././inc/WPUBaseSettings.php:92
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:155
 msgid "Yes"
 msgstr "Oui"
 
-#: .././inc/WPUBaseSettings.php:189
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:279
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:317
+msgid "Upload New Media"
+msgstr "Ajouter un nouveau média"
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:464
+msgid "Save"
+msgstr "Enregistrer"
 
 #: .././wpucustomrss.php:97
 msgid "Feed Settings"
@@ -121,17 +135,12 @@ msgstr ""
 "Charger les articles à venir pour les # prochaines heures. 0 charge tous les "
 "postes."
 
-#: .././wpucustomrss.php:193 .././wpucustomrss.php:199
-msgid "Settings"
-msgstr "Réglages"
-
-#: .././wpucustomrss.php:208
+#: .././wpucustomrss.php:191
 msgid "Preview RSS Feed"
 msgstr "Aperçu du Flux RSS"
 
-#: .././wpucustomrss.php:216
-msgid "Save Changes"
-msgstr "Sauvegarder"
+#~ msgid "Save Changes"
+#~ msgstr "Sauvegarder"
 
 #~ msgid ""
 #~ "Public URL for this feed. Default is /wpucustomrss. 6 to 18 alphanumeric "

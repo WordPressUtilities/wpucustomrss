@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.7
+Version: 0.8.0
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -17,6 +17,7 @@ class WPUCustomRSS {
     private $option_id = 'wpucustomrss_options';
     private $messages = array();
     public $values;
+    public $plugin_version = '0.8.0';
 
     public function __construct() {
         $this->update_values();
@@ -62,12 +63,8 @@ class WPUCustomRSS {
     public function plugins_loaded() {
         load_plugin_textdomain('wpucustomrss', false, dirname(plugin_basename(__FILE__)) . '/lang/');
 
-        // Admin page
-        add_action('admin_menu', array(&$this,
-            'admin_menu'
-        ));
-        add_filter("plugin_action_links_" . plugin_basename(__FILE__), array(&$this,
-            'add_settings_link'
+        add_action('wpubasesettings_before_content_settings_page_' . $this->options['plugin_id'], array(&$this,
+            'admin_page_content'
         ));
 
         // Feed visibility
@@ -82,14 +79,16 @@ class WPUCustomRSS {
 
     public function init() {
 
-        /* Messages */
-        if (is_admin()) {
-            include 'inc/WPUBaseMessages.php';
-            $this->messages = new \wpucustomrss\WPUBaseMessages($this->options['plugin_id']);
-        }
+        include dirname( __FILE__ ) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        $this->settings_update = new \wpucustomrss\WPUBaseUpdate(
+            'WordPressUtilities',
+            'wpucustomrss',
+            $this->plugin_version);
 
         /* Settings */
         $this->settings_details = array(
+            'create_page' => true,
+            'plugin_name' => $this->options['plugin_shortname'],
             'plugin_id' => 'wpucustomrss',
             'option_id' => $this->option_id,
             'sections' => array(
@@ -178,10 +177,8 @@ class WPUCustomRSS {
             )
         );
 
-        if (is_admin()) {
-            include 'inc/WPUBaseSettings.php';
-            new \wpucustomrss\WPUBaseSettings($this->settings_details, $this->settings);
-        }
+        include 'inc/WPUBaseSettings/WPUBaseSettings.php';
+        new \wpucustomrss\WPUBaseSettings($this->settings_details, $this->settings);
 
     }
 
@@ -189,34 +186,8 @@ class WPUCustomRSS {
       Admin page
     ---------------------------------------------------------- */
 
-    public function admin_menu() {
-        add_submenu_page($this->options['admin_parent'], $this->options['plugin_name'] . ' - ' . __('Settings'), $this->options['plugin_shortname'], $this->options['plugin_userlevel'], $this->options['plugin_pageslug'], array(&$this,
-            'admin_settings'
-        ), '', 110);
-    }
-
-    public function add_settings_link($links) {
-        $settings_link = '<a href="' . $this->options['admin_url'] . '">' . __('Settings') . '</a>';
-        array_unshift($links, $settings_link);
-        return $links;
-    }
-
-    public function admin_settings() {
-
-        echo '<div class="wrap"><h1>' . get_admin_page_title() . '</h1>';
-
+    public function admin_page_content() {
         echo '<p><a target="_blank" href="' . get_site_url(null, $this->route) . '"><span style="text-decoration:none;padding-right:0.2em" class="dashicons dashicons-rss"></span>' . __('Preview RSS Feed', 'wpucustomrss') . '</a></p>';
-
-        echo '<hr />';
-        settings_errors($this->settings_details['option_id']);
-
-        echo '<form action="' . admin_url('options.php') . '" method="post">';
-        settings_fields($this->settings_details['option_id']);
-        do_settings_sections($this->options['plugin_id']);
-        echo submit_button(__('Save Changes', 'wpucustomrss'));
-        echo '</form>';
-
-        echo '</div>';
     }
 
     /* ----------------------------------------------------------
