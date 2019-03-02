@@ -3,7 +3,7 @@
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.8.0
+Version: 0.8.1
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: http://darklg.me/
@@ -14,23 +14,24 @@ License URI: http://opensource.org/licenses/MIT
 class WPUCustomRSS {
 
     public $route = 'wpucustomrss';
-    private $option_id = 'wpucustomrss_options';
-    private $messages = array();
     public $values;
-    public $plugin_version = '0.8.0';
+    public $plugin_id = 'wpucustomrss';
+    public $plugin_version = '0.8.1';
+    private $option_id = 'wpucustomrss_options';
+    private $plugin_basename;
 
     public function __construct() {
         $this->update_values();
-
+        $this->plugin_basename = plugin_basename(__FILE__);
         $this->options = array(
             'plugin_publicname' => 'WPU Custom RSS',
             'plugin_name' => 'WPU Custom RSS',
             'plugin_shortname' => 'Custom RSS',
             'plugin_userlevel' => 'manage_options',
-            'plugin_id' => 'wpucustomrss',
-            'plugin_pageslug' => 'wpucustomrss',
+            'plugin_id' => $this->plugin_id,
+            'plugin_pageslug' => $this->plugin_id,
             'admin_parent' => 'tools.php',
-            'admin_url' => admin_url('tools.php?page=wpucustomrss')
+            'admin_url' => admin_url('tools.php?page=' . $this->plugin_id)
         );
 
         //  Action hooks
@@ -61,7 +62,7 @@ class WPUCustomRSS {
     }
 
     public function plugins_loaded() {
-        load_plugin_textdomain('wpucustomrss', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+        load_plugin_textdomain('wpucustomrss', false, dirname($this->plugin_basename) . '/lang/');
 
         add_action('wpubasesettings_before_content_settings_page_' . $this->options['plugin_id'], array(&$this,
             'admin_page_content'
@@ -79,7 +80,8 @@ class WPUCustomRSS {
 
     public function init() {
 
-        include dirname( __FILE__ ) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        /* Update */
+        include dirname(__FILE__) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
         $this->settings_update = new \wpucustomrss\WPUBaseUpdate(
             'WordPressUtilities',
             'wpucustomrss',
@@ -89,6 +91,7 @@ class WPUCustomRSS {
         $this->settings_details = array(
             'create_page' => true,
             'plugin_name' => $this->options['plugin_shortname'],
+            'plugin_basename' => $this->plugin_basename,
             'plugin_id' => 'wpucustomrss',
             'option_id' => $this->option_id,
             'sections' => array(
@@ -177,7 +180,7 @@ class WPUCustomRSS {
             )
         );
 
-        include 'inc/WPUBaseSettings/WPUBaseSettings.php';
+        include dirname(__FILE__) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
         new \wpucustomrss\WPUBaseSettings($this->settings_details, $this->settings);
 
     }
@@ -195,7 +198,7 @@ class WPUCustomRSS {
     ---------------------------------------------------------- */
 
     public function launch_rss() {
-        if (is_admin() || !get_query_var('wpucustomrss')) {
+        if (is_admin() || !get_query_var($this->plugin_id)) {
             return;
         }
         /* After item */
@@ -313,14 +316,14 @@ class WPUCustomRSS {
     ---------------------------------------------------------- */
 
     public function add_query_vars($query_vars) {
-        $query_vars[] = 'wpucustomrss';
+        $query_vars[] = $this->plugin_id;
         return $query_vars;
     }
 
     public function add_custom_rules() {
         add_rewrite_rule(
             $this->route . '$',
-            'index.php?wpucustomrss=1',
+            'index.php?' . $this->plugin_id . '=1',
             'top');
     }
 
