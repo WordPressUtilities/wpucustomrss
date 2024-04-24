@@ -1,5 +1,7 @@
 # WPU Custom RSS
 
+[![PHP workflow](https://github.com/WordPressUtilities/wpucustomrss/actions/workflows/php.yml/badge.svg 'PHP workflow')](https://github.com/WordPressUtilities/wpucustomrss/actions)
+
 Create a second custom RSS feed
 
 Features :

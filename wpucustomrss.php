@@ -1,17 +1,29 @@
 <?php
+defined('ABSPATH') || die;
 
 /*
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
+Update URI: https://github.com/WordPressUtilities/wpucustomrss
 Version: 0.8.2
 Description: Create a second custom RSS feed
 Author: Darklg
-Author URI: http://darklg.me/
+Author URI: https://darklg.me/
+Text Domain: wpucustomrss
+Domain Path: /lang
+Requires at least: 6.2
+Requires PHP: 8.0
+Network: Optional
 License: MIT License
-License URI: http://opensource.org/licenses/MIT
+License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUCustomRSS {
+    public $options;
+    public $plugin_description;
+    public $settings_update;
+    public $settings_details;
+    public $settings;
 
     public $route = 'wpucustomrss';
     public $values;
@@ -62,7 +74,12 @@ class WPUCustomRSS {
     }
 
     public function plugins_loaded() {
-        load_plugin_textdomain('wpucustomrss', false, dirname($this->plugin_basename) . '/lang/');
+
+        $lang_dir = dirname(plugin_basename(__FILE__)) . '/lang/';
+        if (!load_plugin_textdomain('wpucustomrss', false, $lang_dir)) {
+            load_muplugin_textdomain('wpucustomrss', $lang_dir);
+        }
+        $this->plugin_description = __('Create a second custom RSS feed', 'wpucustomrss');
 
         add_action('wpubasesettings_before_content_settings_page_' . $this->options['plugin_id'], array(&$this,
             'admin_page_content'
@@ -81,7 +98,7 @@ class WPUCustomRSS {
     public function init() {
 
         /* Update */
-        include dirname(__FILE__) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        require_once __DIR__ . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
         $this->settings_update = new \wpucustomrss\WPUBaseUpdate(
             'WordPressUtilities',
             'wpucustomrss',
@@ -180,7 +197,7 @@ class WPUCustomRSS {
             )
         );
 
-        include dirname(__FILE__) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
+        require_once __DIR__ . '/inc/WPUBaseSettings/WPUBaseSettings.php';
         new \wpucustomrss\WPUBaseSettings($this->settings_details, $this->settings);
 
     }
@@ -236,7 +253,8 @@ class WPUCustomRSS {
             return '';
         }
         $_attachment = wp_get_attachment_image_src($_thumb, 'large', false, '');
-        $_length = filesize(get_attached_file($_thumb));
+        $_attached_file = get_attached_file($_thumb);
+        $_length = is_readable($_attached_file) ? filesize($_attached_file) : 0;
         $_type = get_post_mime_type($_thumb);
         if (!is_array($_attachment) || !isset($_attachment[0])) {
             return '';
