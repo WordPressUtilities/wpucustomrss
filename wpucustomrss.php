@@ -5,7 +5,7 @@ defined('ABSPATH') || die;
 Plugin Name: WPU Custom RSS
 Plugin URI: https://github.com/WordPressUtilities/wpucustomrss
 Update URI: https://github.com/WordPressUtilities/wpucustomrss
-Version: 0.8.2
+Version: 0.9.1
 Description: Create a second custom RSS feed
 Author: Darklg
 Author URI: https://darklg.me/
@@ -28,7 +28,7 @@ class WPUCustomRSS {
     public $route = 'wpucustomrss';
     public $values;
     public $plugin_id = 'wpucustomrss';
-    public $plugin_version = '0.8.2';
+    public $plugin_version = '0.9.1';
     private $option_id = 'wpucustomrss_options';
     private $plugin_basename;
 
@@ -283,10 +283,13 @@ class WPUCustomRSS {
         }
         $_query = array();
 
+        // Ignore sticky posts
+        $_query['ignore_sticky_posts'] = true;
+
         // Number of posts
         $_query['posts_per_page'] = 10;
         if (isset($this->values['posts_per_page']) && is_numeric($this->values['posts_per_page'])) {
-            $_query['posts_per_page'] = $this->values['posts_per_page'];
+            $_query['posts_per_page'] = intval($this->values['posts_per_page'],10);
         }
 
         // Post status
